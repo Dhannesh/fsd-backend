@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products List</title>
+    <style>
+      body {
+        background: pink;
+        padding: 2rem;
+        display: flex;
+        flex-direction: row;
+        /* flex-wrap: wrap; */
+        gap: 2rem;
+      }
+      .product {
+        width: 400px;
+        background: violet;
+        padding: 2rem;
+        margin: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      const root = document.getElementById("root");
+      const getData = async () => {
+        const temp = await fetch("https://dummyjson.com/products");
+        const data = await temp.json();
+        const { products } = data;
+        products.forEach((elem) => {
+          const div = document.createElement("div");
+          div.setAttribute("class", "product");
+          div.innerHTML = `
+            <h1>${elem.title}</h1>
+                <p>${elem.description}</p>
+                <img src="${elem.thumbnail}" height='200'>
+            `;
+          root.appendChild(div);
+        });
+      };
+      getData();
+    </script>
+  </body>
+</html>
