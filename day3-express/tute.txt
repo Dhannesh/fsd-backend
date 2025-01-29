@@ -1,0 +1,5 @@
+npx nodemon app.js - for script disabled error
+npm nodemon app.js
+
+REST API
+* 
