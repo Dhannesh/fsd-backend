@@ -2,4 +2,8 @@ npx nodemon app.js - for script disabled error
 npm nodemon app.js
 
 REST API
-* 
+* HTTP Methods (...)
+•⁠  ⁠Resource-Based (❌ /getUser, /handleUser, /findUser) (✅ /users, /products, /vehicles, /students)
+•⁠  ⁠Stateless (❌ likhilesh -> page1 (next) nextPage )  (✅likhilesh -> page1 (next) page2 )
+•⁠  ⁠Always use plurals in URL
+•⁠  ⁠response will always be JSON (as long as possible) (Javascript Object Notation)
