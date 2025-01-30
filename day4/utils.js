@@ -49,7 +49,7 @@ export const updateProduct = async (product, pid) => {
     const updatedProducts = products.map((item) => {
       if (item.id == pid) {
         console.log(item);
-        return { ...item, name: product.name, price: product.price };
+        return { ...item, ...product };
       }
       return item;
     });
