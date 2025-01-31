@@ -18,7 +18,7 @@ app.get("/products", async (req, res) => {
 
 app.post("/products", async (req, res) => {
   const product = await addProducts(req.body);
-  res.send({ status: "success", data: product });
+  res.status(201).send({ status: "success", data: product });
 });
 
 app.put("/products/:pid", async (req, res) => {
