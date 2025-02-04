@@ -3,5 +3,9 @@ handson-1/node_modules
 day3/node_modules
 day3-express/node_modules
 day4/node_modules
-day5/node_modules
-day5/.env
+day5-6/node_modules
+day5-6/.env
+day7/node_modules
+day7/.env
+day7/dist
+day7/dist-ssr

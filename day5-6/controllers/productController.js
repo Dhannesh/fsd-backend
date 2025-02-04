@@ -2,8 +2,31 @@ import Product from "../models/productModel.js";
 
 export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
-    res.status(200).json({ count: products.length, data: products });
+    // const products = await Product.find();
+    const productQuery = Product.find();
+    const {
+      q,
+      size,
+      pg = 1,
+      minprice,
+      maxprice,
+      // fields = "-_id -__v -createdAt -updatedAt",
+    } = req.query;
+    if (q) {
+      const reg = new RegExp(q, "i");
+      productQuery.where("name").regex(reg);
+    }
+    if (minprice) productQuery.where("price").gte(minprice);
+    if (maxprice) productQuery.where("price").lte(maxprice);
+    productQuery.sort("price -name");
+
+    const cloneQuery = productQuery.clone();
+    const total = await cloneQuery.countDocuments();
+    if (size) productQuery.limit(size);
+    // productQuery.select(fields);
+    productQuery.skip((pg - 1) * size);
+    const products = await productQuery;
+    res.status(200).json({ count: total, data: products });
   } catch (error) {
     console.log("Error:", error.message);
     res.status(500).json({ msg: "Interal Server Error" });
@@ -15,7 +38,7 @@ export const addProduct = async (req, res) => {
     const product = await Product.create(req.body);
     res.status(201).json({ product });
   } catch (error) {
-    console.log("Error:", error.message);
+    if (error instanceof ValidationError) console.log("Error:", error.message);
     res.status(500).json({ msg: "Interal Server Error" });
   }
 };
@@ -35,7 +58,8 @@ export const removeProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const product = await Product.findByIdAndDelete(id);
-    if (product) return res.status(200).json({ msg: "product deleted", product });
+    if (product)
+      return res.status(200).json({ msg: "product deleted", product });
     res.status(200).json({ msg: "product not found" });
   } catch (err) {
     console.log("Error:", err.message);
@@ -50,7 +74,8 @@ export const updateProduct = async (req, res) => {
       new: true,
       runValidators: true,
     });
-    if (product) return res.status(200).json({ msg: "product updated", product });
+    if (product)
+      return res.status(200).json({ msg: "product updated", product });
     res.status(200).json({ msg: "product not found" });
   } catch (err) {
     console.log("Error:", err.message);
