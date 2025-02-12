@@ -6,24 +6,27 @@ export const getAllProducts = async (req, res) => {
     const productQuery = Product.find();
     const {
       q,
-      size,
+      size = 6,
       pg = 1,
       minprice,
       maxprice,
-      // fields = "-_id -__v -createdAt -updatedAt",
+      sortby = "price",
     } = req.query;
+    const fields = "_id name price createdAt updatedAt"
     if (q) {
       const reg = new RegExp(q, "i");
       productQuery.where("name").regex(reg);
     }
     if (minprice) productQuery.where("price").gte(minprice);
     if (maxprice) productQuery.where("price").lte(maxprice);
-    productQuery.sort("price -name");
+    // productQuery.sort("price -name");
+    productQuery.sort(sortby);
 
     const cloneQuery = productQuery.clone();
     const total = await cloneQuery.countDocuments();
     if (size) productQuery.limit(size);
-    // productQuery.select(fields);
+
+    productQuery.select(fields);
     productQuery.skip((pg - 1) * size);
     const products = await productQuery;
     res.status(200).json({ count: total, data: products });
@@ -35,10 +38,12 @@ export const getAllProducts = async (req, res) => {
 
 export const addProduct = async (req, res) => {
   try {
+    console.log("Req.body: ", req.body);
     const product = await Product.create(req.body);
+
     res.status(201).json({ product });
   } catch (error) {
-    if (error instanceof ValidationError) console.log("Error:", error.message);
+    console.log("Error:", error.message);
     res.status(500).json({ msg: "Interal Server Error" });
   }
 };
