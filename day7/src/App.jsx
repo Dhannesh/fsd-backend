@@ -13,9 +13,12 @@ const App = () => {
   const [user, setUser] = useState({ isLoggedIn: false, name: "Guest" });
   const isUserLoggedIn = async () => {
     try {
-      const resp = await fetch("http://localhost:3000/api/v1/user/isloggedin", {
-        credentials: "include",
-      });
+      const resp = await fetch(
+        import.meta.env.VITE_SOME_KEY + "/api/v1/user/isloggedin",
+        {
+          credentials: "include",
+        }
+      );
       const respObj = await resp.json();
       if (resp.status === 200) {
         setUser({

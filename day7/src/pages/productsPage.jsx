@@ -5,7 +5,7 @@ import Loader from "../components/Loader";
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [queryString, setQueryString] = useState(
-    "http://localhost:3000/api/v1/products"
+    import.meta.env.VITE_SOME_KEY + "/api/v1/products"
   );
   const [sortBy, setSortBy] = useState("Price: Low to High");
   const [pages, setPages] = useState();

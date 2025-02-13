@@ -9,7 +9,7 @@ const AddProduct = () => {
       e.preventDefault();
       console.log(pname, price);
 
-      const resp = await fetch("http://localhost:3000/api/v1/products", {
+      const resp = await fetch(import.meta.env.VITE_SOME_KEY+"/api/v1/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
