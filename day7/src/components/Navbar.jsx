@@ -1,5 +1,7 @@
 import { Link } from "react-router";
-const Navbar = () => {
+const Navbar = (props) => {
+  console.log(props);
+
   return (
     <nav className="navbar navbar-inverse">
       <div className="container-fluid">

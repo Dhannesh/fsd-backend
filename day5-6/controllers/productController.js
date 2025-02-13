@@ -12,7 +12,7 @@ export const getAllProducts = async (req, res) => {
       maxprice,
       sortby = "price",
     } = req.query;
-    const fields = "_id name price createdAt updatedAt"
+    const fields = "_id name price createdAt updatedAt";
     if (q) {
       const reg = new RegExp(q, "i");
       productQuery.where("name").regex(reg);
@@ -30,6 +30,7 @@ export const getAllProducts = async (req, res) => {
     productQuery.skip((pg - 1) * size);
     const products = await productQuery;
     res.status(200).json({ count: total, data: products });
+    return;
   } catch (error) {
     console.log("Error:", error.message);
     res.status(500).json({ msg: "Interal Server Error" });

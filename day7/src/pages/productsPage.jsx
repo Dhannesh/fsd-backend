@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router";
 import Product from "../components/Product";
-import Pages from "../components/Pages";
 import Loader from "../components/Loader";
 
 const ProductsPage = () => {
@@ -17,7 +15,9 @@ const ProductsPage = () => {
 
   const getData = async () => {
     try {
-      const resp = await fetch(`${queryString}?pg=${pageNo}&sortby=${sortBy}`);
+      const resp = await fetch(`${queryString}?pg=${pageNo}&sortby=${sortBy}`, {
+        credentials: "include",
+      });
       const data = await resp.json();
       const { count } = data;
       setProductCount(count);
@@ -26,6 +26,7 @@ const ProductsPage = () => {
       else setPages(Math.floor(count / 6) + 1);
 
       setProducts(data.data);
+      setLoading(false);
     } catch (error) {
       console.log("Error:", error.message);
     }
@@ -59,7 +60,6 @@ const ProductsPage = () => {
     getData();
   };
   const Pages = () => {
-    console.log("pages:", pages);
     return (
       <>
         {[...Array(pages).keys()].map((x) => (

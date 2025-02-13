@@ -1,22 +1,30 @@
 import { useState } from "react";
+import { toast } from "react-fox-toast";
+import { useNavigate } from "react-router";
 
 const Signin = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const resp = await fetch("http://localhost:3000/api/v1/user/register", {
+      const resp = await fetch("http://localhost:3000/api/v1/user/login", {
         method: "POST",
+        credentials: "include",
+
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
       });
-      if (resp.ok) {
-        setPassword("");
-        setPassword("");
+      const respObj = await resp.json();
+      console.log(respObj);
+
+      if (respObj.status == "success") {
+        toast.success("login successfully", { position: "top-center" });
+        navigate("/");
       }
     } catch (error) {
       console.log("Error:", error);

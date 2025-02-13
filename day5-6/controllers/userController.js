@@ -94,12 +94,24 @@ export const loginUser = async (req, res) => {
     });
 
     res.cookie("authorization", token);
-    console.log("token:", token);
+    console.log("token:", token, {
+      httpOnly: true,
+      samesite: "none",
+      secure: true,
+    });
 
     res.status(200).json({ status: "success" });
     return;
   } catch (error) {
     res.status(500).json({ msg: "Interal Server Error" });
+    console.log("Error:", error.message);
+  }
+};
+
+export const isLoggedIn = (req, res) => {
+  try {
+    res.status(200).json({ status: "success", data: req.userInfo });
+  } catch (error) {
     console.log("Error:", error.message);
   }
 };
