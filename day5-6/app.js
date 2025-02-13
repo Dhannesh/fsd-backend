@@ -8,7 +8,6 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
 import otpRoutes from "./routes/otpRoutes.js";
-import jwt from "jsonwebtoken";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 
 const app = express();
